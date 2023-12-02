@@ -18,7 +18,7 @@ import ImageCard from '@/components/ImageCard.vue'
       </div>
       <div class="flex-1">
         <!-- 在这里插入图片，可以是本地或远程图片 -->
-        <img src="path-to-your-image.jpg" alt="项目图片" class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"/>
+        <img src="ASMR.webp" alt="项目图片" class="rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"/>
       </div>
     </section>
 
@@ -26,9 +26,9 @@ import ImageCard from '@/components/ImageCard.vue'
     <section class="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <!-- 这里可以通过循环来展示多个卡片，以下是一个示例卡片 -->
       <ImageCard
-        title="卡片标题"
-        description="这里是关于这个卡片的详细介绍。"
-        imageUrl="path-to-your-image.jpg"
+        title="梅尔频谱图（Mel-Spectogram）"
+        description="利用librosa等声学处理库，对音频进行可视化，直观展示听觉在视觉上的特征。"
+        imageUrl="mel_images/水声/是Sumimi呀1_segment_15_mel_spectrogram.png"
       />
     </section>
   </main>

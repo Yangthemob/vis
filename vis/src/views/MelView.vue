@@ -21,7 +21,7 @@ const melSpectrograms = [
 </script>
 
 <template>
-  <main class="bg-white text-black p-6">
+  <main class="bg-white text-black p-6 container mx-auto mt-10">
     <h1 class="text-4xl font-bold mb-6">Mel-Spectrogram 展示</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <!-- 循环遍历 melSpectrograms 数据 -->
