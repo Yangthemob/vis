@@ -32,7 +32,7 @@ const generateRandomColor = () => {
 
 // 读取文本文件并处理数据
 const loadData = async () => {
-    const response = await fetch('/jieba.txt');
+    const response = await fetch('./jieba.txt');
     const text = await response.text();
     wordCloudData.value = text.split('\n').map(line => {
         const [word, count] = line.split(': ');
