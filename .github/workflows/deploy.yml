@@ -27,3 +27,5 @@ jobs:
         with:
           branch: gh-pages  # 部署到的目标分支
           folder: dist      # 构建的输出目录
+          token: ${{ secrets.ACCESS_TOKEN }}  # 使用你刚添加的令牌
+      
