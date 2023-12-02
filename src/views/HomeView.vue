@@ -28,7 +28,7 @@ import ImageCard from '@/components/ImageCard.vue'
       <ImageCard
         title="梅尔频谱图（Mel-Spectogram）"
         description="利用librosa等声学处理库，对音频进行可视化，直观展示听觉在视觉上的特征。"
-        imageUrl="/home_images/是Sumimi呀1_segment_15_mel_spectrogram.png"
+        imageUrl="./home_images/是Sumimi呀1_segment_15_mel_spectrogram.png"
       />
     </section>
   </main>
