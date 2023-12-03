@@ -1,16 +1,27 @@
 <template>
     <div class="container mx-auto p-4">
-        <h1 class="text-xl font-bold mb-4">可视化展示</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h1 class="text-4xl font-bold mb-4 mt-10">可视化展示</h1>
+        
+        <!-- 第一个图表：词云 -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-2">词云展示</h2>
+            <p class="mb-4">在抖音平台使用关键词ASMR进行爬虫，将title与desc使用jieba分词库处理，使用echarts-wordcloud构造词云。</p>
             <div class="chart-container">
                 <v-chart v-if="wordCloudData.length" :option="chartOption" />
             </div>
+        </section>
+
+        <!-- 第二个图表：折线图 -->
+        <section>
+            <h2 class="text-2xl font-semibold mb-2">观看人数变化</h2>
+            <p class="mb-4">维护一个标志性的ASMR视频播放列表，每隔半小时对在线观看人数进行采样，绘制观看人数折线图。</p>
             <div class="chart-container">
                 <v-chart :option="lineChartOption" />
             </div>
-        </div>
+        </section>
     </div>
 </template>
+
 
 
   
@@ -37,7 +48,7 @@ echarts.use([
 ]);
 
 // 折线图开始 //
-const user_count = [947, 973, 965, 1037, 833, 836, 757, 612, 568, 554, 492, 395, 380, 377, 311, 317, 265, 257, 184, 185, 164, 55, 208, 276, 275, 345, 339, 323, 421, 404, 341, 214, 355, 311, 277, 256, 308, 434, 491, 487, 679, 648, 767, 757, 760, 845, 941,916]
+const user_count = [947, 973, 965, 1037, 833, 836, 757, 612, 568, 554, 492, 395, 380, 377, 311, 278, 225, 157, 84, 85, 64, 55, 208, 276, 275, 345, 339, 323, 421, 404, 341, 214, 355, 311, 277, 256, 308, 434, 491, 487, 679, 648, 767, 757, 760, 845, 941,916]
 
 const lineChartOption = ref({
   title: {
@@ -119,7 +130,7 @@ const chartOption = ref({
 <style>
 .chart-container {
     width: 100%;
-    height: 700px;
+    height: 500px;
     /* 增加高度 */
 }
 </style>
