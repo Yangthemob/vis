@@ -5,22 +5,67 @@
             <div class="chart-container">
                 <v-chart v-if="wordCloudData.length" :option="chartOption" />
             </div>
-            <!-- 其他可视化组件的容器可以在这里添加 -->
+            <div class="chart-container">
+                <v-chart :option="lineChartOption" />
+            </div>
         </div>
     </div>
 </template>
 
+
   
 <script setup>
-import VChart from 'vue-echarts';
 import { ref, onMounted } from 'vue';
-import { CanvasRenderer } from 'echarts/renderers';
-// 导入词云图
-import 'echarts-wordcloud';
+import VChart from 'vue-echarts';
 import * as echarts from 'echarts/core';
+import {
+  TitleComponent,
+  TooltipComponent,
+  GridComponent
+} from 'echarts/components';
+import { LineChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+import 'echarts-wordcloud';
 
-// 注册必要的组件
-echarts.use([CanvasRenderer]);
+// 注册组件
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  LineChart,
+  CanvasRenderer
+]);
+
+// 折线图开始 //
+const user_count = [947, 973, 965, 1037, 833, 836, 757, 612, 568, 554, 492, 395, 380, 377, 311, 317, 265, 257, 184, 185, 164, 55, 208, 276, 275, 345, 339, 323, 421, 404, 341, 214, 355, 311, 277, 256, 308, 434, 491, 487, 679, 648, 767, 757, 760, 845, 941,916]
+
+const lineChartOption = ref({
+  title: {
+    text: '一天内观众人数变化'
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: Array.from({ length: 48 }, (_, i) => `${Math.floor(i / 2)}:${i % 2 === 0 ? '00' : '30'}`) // 生成一天内每半小时的时间标签
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: user_count,
+      type: 'line',
+      areaStyle: {}
+    }
+  ]
+});
+// 折线图结束 //
+
+
+// 词云开始 //
 
 // 词云图数据
 const wordCloudData = ref([]);
@@ -48,8 +93,6 @@ const loadData = async () => {
 
 onMounted(loadData);
 
-
-
 // 词云图配置
 const chartOption = ref({
     series: [{
@@ -69,6 +112,7 @@ const chartOption = ref({
         data: wordCloudData.value
     }]
 });
+// 词云结束 //
 </script>
   
 
