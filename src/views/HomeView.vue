@@ -30,6 +30,11 @@ import ImageCard from '@/components/ImageCard.vue'
         description="利用librosa等声学处理库，对音频进行可视化，直观展示听觉在视觉上的特征。"
         imageUrl="./home_images/是Sumimi呀1_segment_15_mel_spectrogram.png"
       />
+      <ImageCard
+        title="词云（WordCloud）"
+        description="对视频平台的ASMR与触发音内容爬取、分词，得到词频，并利用词云可视化展示。可以直观看出ASMR观众最喜欢哪些内容。"
+        imageUrl="./home_images/wordcloud.PNG"
+      />
     </section>
   </main>
 </template>
