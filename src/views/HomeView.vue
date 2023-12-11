@@ -35,6 +35,11 @@ import ImageCard from '@/components/ImageCard.vue'
         description="对视频平台的ASMR与触发音内容爬取、分词，得到词频，并利用词云可视化展示。可以直观看出ASMR观众最喜欢哪些内容。"
         imageUrl="./home_images/wordcloud.PNG"
       />
+      <ImageCard
+        title="观众指数"
+        description="基于对一部分ASMR直播间/视频持续监控，得到观众数据，并利用折线图可视化展示。"
+        imageUrl="./home_images/viewer.png"
+      />
     </section>
   </main>
 </template>
