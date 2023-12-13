@@ -9,7 +9,7 @@
         <button class="py-2 px-4 bg-blue-500 text-white border border-blue-500 rounded"
           @click="toggleWordCloudInfo">展示解读</button>
       </div>
-      <p class="mb-4">在抖音平台使用关键词ASMR进行爬虫...</p>
+      <p class="mb-4">在抖音平台使用关键词ASMR进行爬虫</p>
       <div class="chart-container">
         <v-chart v-if="wordCloudData.length" :option="chartOption" />
       </div>
@@ -35,55 +35,55 @@
           舒服
           好听
           舒缓</p>
-          <p>音频和听觉体验:
+        <p>音频和听觉体验:
 
-视频
-声控
-耳机
-咀嚼
-助手
-触发
-模拟
-声音
-体验
-敲击
-掏耳朵
-听觉
-音助眠
-采耳</p>
-<p>食物和美食:
-美食
-零食
-小姐姐
-口腔
-吃货
-蜂蜜</p>
-<p>娱乐和活动:
-推荐
-宝宝
-场景
-带上
-引导
-今天
-进行
-轻松
-戴上
-效果
-剧情
-总裁
-夫人
-外国
-系列
-直播</p>
-<p>
-  时间和数量:
-极度
-一个
-分钟
-超级
-一定
-大家
-</p>
+          视频
+          声控
+          耳机
+          咀嚼
+          助手
+          触发
+          模拟
+          声音
+          体验
+          敲击
+          掏耳朵
+          听觉
+          音助眠
+          采耳</p>
+        <p>食物和美食:
+          美食
+          零食
+          小姐姐
+          口腔
+          吃货
+          蜂蜜</p>
+        <p>娱乐和活动:
+          推荐
+          宝宝
+          场景
+          带上
+          引导
+          今天
+          进行
+          轻松
+          戴上
+          效果
+          剧情
+          总裁
+          夫人
+          外国
+          系列
+          直播</p>
+        <p>
+          时间和数量:
+          极度
+          一个
+          分钟
+          超级
+          一定
+          大家
+        </p>
       </div>
     </section>
 
@@ -94,13 +94,25 @@
         <button class="py-2 px-4 bg-blue-500 text-white border border-blue-500 rounded"
           @click="toggleLineChartInfo">展示解读</button>
       </div>
-      <p class="mb-4">维护一个标志性的ASMR视频播放列表...</p>
+      <p class="mb-4">维护一个标志性的ASMR视频播放列表</p>
       <div class="chart-container">
         <v-chart :option="lineChartOption" />
       </div>
       <div v-if="showLineChartInfo" class="mt-4 p-4 rounded bg-gray-100">
         <p>符合主要受众-年轻人 的作息规律，凌晨一点半达峰，上午最低谷（因为在补觉/上课）。</p>
         <p>在准点、半点时刻经常会有大的波动，主要因为主播的上播/下播行为会安排在准点、半点时刻。</p>
+      </div>
+    </section>
+    <!-- 新增的世界地图部分 -->
+    <section class="my-8">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-semibold mb-2">ASMR Google Trends：Interest by region
+        </h2>
+      </div>
+      <p class="mb-4">从2016至今的ASMR Google搜索指数</p>
+      <p class="mb-4">A higher value means a higher proportion of all queries, not a higher absolute query count.</p>
+      <div class="chart-container">
+        <v-chart :option="worldMapOption" style="height: 500px;" />
       </div>
     </section>
   </div>
@@ -115,9 +127,12 @@ import * as echarts from 'echarts/core';
 import {
   TitleComponent,
   TooltipComponent,
-  GridComponent
+  GridComponent,
+  VisualMapComponent
 } from 'echarts/components';
+import Papa from 'papaparse';
 import { LineChart } from 'echarts/charts';
+import { MapChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import 'echarts-wordcloud';
 
@@ -127,7 +142,9 @@ echarts.use([
   TooltipComponent,
   GridComponent,
   LineChart,
-  CanvasRenderer
+  MapChart,
+  CanvasRenderer,
+  VisualMapComponent
 ]);
 
 const showWordCloudInfo = ref(false);
@@ -140,6 +157,61 @@ const toggleWordCloudInfo = () => {
 const toggleLineChartInfo = () => {
   showLineChartInfo.value = !showLineChartInfo.value;
 };
+
+// 地图开始 //
+const worldMapOption = ref({});
+
+onMounted(async () => {
+  // 加载并解析 CSV 数据
+  const response = await fetch('/geoMap.csv');
+  const csvData = await response.text();
+  const parsedData = Papa.parse(csvData, { header: true }).data;
+
+  // 转换为 ECharts 需要的格式
+  const mapData = parsedData.map(item => ({
+    name: item.Country,
+    value: item.ASMR ? parseFloat(item.ASMR) : 0
+  }));
+
+  // 加载世界地图 GeoJSON 数据
+  const worldJsonResponse = await fetch('/world.json');
+  const worldMapData = await worldJsonResponse.json();
+
+  // 注册地图数据
+  echarts.registerMap('world', worldMapData);
+
+  // 设置 ECharts 世界地图的选项
+  worldMapOption.value = {
+    title: {
+      text: '',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}<br/>{c} (ASMR)'
+    },
+    visualMap: {
+      min: 0,
+      max: Math.max(...mapData.map(item => item.value)),
+      left: 'left',
+      top: 'bottom',
+      text: ['高', '低'], // 文字，默认为数值文本
+      calculable: true,
+      inRange: {
+        color: ['#e0ffff', '#006edd'] // 颜色的范围，可以根据需要调整
+      }
+    },
+    series: [{
+      name: 'ASMR Index',
+      type: 'map',
+      mapType: 'world',
+      roam: true,
+      data: mapData
+    }]
+  };
+});
+
+// 地图结束 //
 
 // 折线图开始 //
 const user_count = [947, 973, 965, 1037, 833, 836, 757, 612, 568, 554, 492, 395, 380, 377, 311, 278, 225, 157, 84, 85, 64, 55, 208, 246, 275, 345, 339, 323, 421, 388, 341, 214, 355, 311, 277, 256, 308, 434, 491, 487, 679, 648, 767, 757, 760, 845, 941, 916]
