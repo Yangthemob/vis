@@ -139,6 +139,19 @@
         <!-- 添加其他解释性文本或分析 -->
       </div>
     </section>
+    <!-- 新增的图片展示部分 -->
+    <section class="my-8">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-semibold mb-2">Confusion Matrix</h2>
+        <!-- 如果需要，可以在这里添加按钮或其他元素 -->
+      </div>
+      <p class="mb-4">在训练分类模型时检验准确度的一种方式。</p>
+      <p>可以在某种程度上帮助我们了解，在模型的眼中，这些声音该如何分类。</p>
+      <div class="flex justify-center">
+        <img src="/matrix.png" alt="描述性文本" class="rounded shadow-lg">
+      </div>
+      <!-- 如果需要，可以在这里添加更多内容 -->
+    </section>
   </div>
 </template>
 
