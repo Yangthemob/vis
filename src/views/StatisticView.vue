@@ -122,6 +122,23 @@
         <p>有趣的是，搜索最高的词条之一是：“what is ASMR？”“什么是ASMR？”。</p>
       </div>
     </section>
+    <!-- Timeline部分 -->
+    <section class="my-8">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-semibold mb-2">搜索指数变化</h2>
+        <button class="py-2 px-4 bg-blue-500 text-white border border-blue-500 rounded"
+          @click="toggleTimelineInfo">展示解读</button>
+      </div>
+      <p class="mb-4">从2016至今的ASMR Google Interest over time</p>
+      <div class="chart-container">
+        <v-chart :option="timeLineOption" style="height: 500px;" />
+      </div>
+      <div v-if="showTimeLineInfo" class="mt-4 p-4 rounded bg-gray-100">
+        <p>很明显的上升趋势，全世界人们都在逐渐认知到ASMR这一内容类别的魅力。</p>
+        <p>比较有意思的是，每年的一二月份，搜索指数似乎会格外高。</p>
+        <!-- 添加其他解释性文本或分析 -->
+      </div>
+    </section>
   </div>
 </template>
 
@@ -135,7 +152,10 @@ import {
   TitleComponent,
   TooltipComponent,
   GridComponent,
-  VisualMapComponent
+  VisualMapComponent,
+  //XAxisComponent, 
+  //YAxisComponent, 
+  DatasetComponent
 } from 'echarts/components';
 import Papa from 'papaparse';
 import { LineChart } from 'echarts/charts';
@@ -151,12 +171,16 @@ echarts.use([
   LineChart,
   MapChart,
   CanvasRenderer,
-  VisualMapComponent
+  VisualMapComponent,
+  //XAxisComponent,
+  //YAxisComponent,
+  DatasetComponent
 ]);
 
 const showWordCloudInfo = ref(false);
 const showLineChartInfo = ref(false);
 const showMapInfo = ref(false);
+const showTimeLineInfo = ref(false);
 
 const toggleWordCloudInfo = () => {
   showWordCloudInfo.value = !showWordCloudInfo.value;
@@ -169,6 +193,10 @@ const toggleLineChartInfo = () => {
 const toggleMapInfo = () => {
   showMapInfo.value = !showMapInfo.value;
 }
+
+const toggleTimelineInfo = () => {
+  showTimeLineInfo.value = !showTimeLineInfo.value;
+};
 
 // 地图开始 //
 const worldMapOption = ref({});
@@ -224,6 +252,49 @@ onMounted(async () => {
 });
 
 // 地图结束 //
+
+// timeline开始 //
+const timeLineOption = ref({});
+
+onMounted(async () => {
+  // 加载并解析 CSV 数据
+  const response = await fetch('/timeline.csv');
+  const csvData = await response.text();
+  const parsedData = Papa.parse(csvData, { header: true }).data;
+
+  // 转换为 ECharts 需要的格式
+  const xAxisData = parsedData.map(item => item.Month);
+  const seriesData = parsedData.map(item => parseInt(item.ASMR));
+
+
+  // 打印数据以供调试
+  //console.log("X Axis Data:", xAxisData);
+  //console.log("Series Data:", seriesData);
+
+  // 设置 ECharts 折线图的选项
+  timeLineOption.value = {
+    title: {
+      text: 'ASMR 搜索指数变化',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      data: xAxisData
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [{
+      data: seriesData,
+      type: 'line'
+    }]
+  };
+});
+
+// timeline结束 //
 
 // 折线图开始 //
 const user_count = [947, 973, 965, 1037, 833, 836, 757, 612, 568, 554, 492, 395, 380, 377, 311, 278, 225, 157, 84, 85, 64, 55, 208, 246, 275, 345, 339, 323, 421, 388, 341, 214, 355, 311, 277, 256, 308, 434, 491, 487, 679, 648, 767, 757, 760, 845, 941, 916]
