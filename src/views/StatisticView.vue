@@ -103,16 +103,23 @@
         <p>在准点、半点时刻经常会有大的波动，主要因为主播的上播/下播行为会安排在准点、半点时刻。</p>
       </div>
     </section>
-    <!-- 新增的世界地图部分 -->
+    <!-- 世界地图 -->
     <section class="my-8">
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-semibold mb-2">ASMR Google Trends：Interest by region
         </h2>
+        <button class="py-2 px-4 bg-blue-500 text-white border border-blue-500 rounded"
+          @click="toggleMapInfo">展示解读</button>
       </div>
       <p class="mb-4">从2016至今的ASMR Google搜索指数</p>
       <p class="mb-4">A higher value means a higher proportion of all queries, not a higher absolute query count.</p>
       <div class="chart-container">
         <v-chart :option="worldMapOption" style="height: 500px;" />
+      </div>
+      <div v-if="showMapInfo" class="mt-4 p-4 rounded bg-gray-100">
+        <p>虽然这是Google提供的数据，但中国的interest指数确实最高的。难以置信。</p>
+        <p>经过检查中国区具体的检索词汇后，我们确认了，这些搜索确实是含有中文内容/关键词/中文ASMR创作者的。</p>
+        <p>有趣的是，搜索最高的词条之一是：“what is ASMR？”“什么是ASMR？”。</p>
       </div>
     </section>
   </div>
@@ -149,6 +156,7 @@ echarts.use([
 
 const showWordCloudInfo = ref(false);
 const showLineChartInfo = ref(false);
+const showMapInfo = ref(false);
 
 const toggleWordCloudInfo = () => {
   showWordCloudInfo.value = !showWordCloudInfo.value;
@@ -157,6 +165,10 @@ const toggleWordCloudInfo = () => {
 const toggleLineChartInfo = () => {
   showLineChartInfo.value = !showLineChartInfo.value;
 };
+
+const toggleMapInfo = () => {
+  showMapInfo.value = !showMapInfo.value;
+}
 
 // 地图开始 //
 const worldMapOption = ref({});
